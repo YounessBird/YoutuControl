@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: content.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: content.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let youtubeBtnDivName = "ytp-left-controls";
+let videoFrame = document.getElementsByClassName("html5-main-video")[0];
+let videoPage = document.getElementsByClassName("watch-title")[0];
+if (!videoPage) {
+  videoPage = document.getElementsByClassName(
+    "ytd-video-primary-info-renderer"
+  )[0];
+}
+
+let initDone = false;
+let btnCreated = false;
+/**
+ *  A function that Runs the "getVideoInfo" function every 100ms
+ * @returns { function() }
+ */
+let detectVideoInfo = () => {
+  /**
+   * This callback is a returned event listener
+   * @returns { () => void }
+   */
+  return setInterval(() => {
+    //Runs the "getVideoInfo" function every 100ms
+    getVideoInfo();
+  }, 100);
+};
+
+let getVideoInfo = () => {
+  if (videoFrame &amp;&amp; videoPage) {
+    if (!btnCreated) {
+      createBtn();
+      // console.log('create!');
+      btnCreated = true;
+    }
+
+    if (videoFrame.readyState === 4) {
+      clearInterval(runDetectVideoInfo);
+      initDone = true;
+    }
+  } else {
+    videoPage = document.getElementsByClassName("watch-title")[0];
+    if (!videoPage) {
+      videoPage = document.getElementsByClassName(
+        "ytd-video-primary-info-renderer"
+      )[0];
+    }
+    videoFrame = document.getElementsByClassName("html5-main-video")[0];
+  }
+};
+
+let setLargeBtn = () => {
+  let btn = document.getElementsByClassName("btn-div");
+  if (btn) {
+    btn = btn[0];
+    let icon = btn.getElementsByClassName("material-icons")[0];
+    icon.setAttribute("class", "material-icons icon material-font-large");
+  }
+};
+
+let setSmallBtn = () => {
+  let btn = document.getElementsByClassName("btn-div");
+  if (btn) {
+    btn = btn[0];
+    let icon = btn.getElementsByClassName("material-icons")[0];
+    icon.setAttribute("class", "material-icons icon material-font-small");
+  }
+};
+
+let createBtn = () => {
+  let btn = document.createElement("div");
+  btn.setAttribute("class", "btn-div ytp-button");
+
+  let icon = document.createElement("i");
+  icon.setAttribute("class", "material-icons icon material-font-small");
+  icon.textContent = "repeat";
+
+  btn.appendChild(icon);
+  // btn.textContent = 'Loop';
+
+  btn.onclick = repeat;
+
+  let btnPanel = document.getElementsByClassName(youtubeBtnDivName)[0];
+  btnPanel.insertBefore(btn, btnPanel.firstChild);
+  //console.log('btn created!');
+};
+
+let repeatItval = null;
+chrome.runtime.onMessage.addListener((request, sender, sendMessage) => {
+  var videoElements = document.querySelectorAll("video");
+
+  if (request.message === "loop") {
+    console.log("looping...");
+    videoFrame.setAttribute("loop", true);
+    sendMessage({ send: "video looping" });
+  }
+  if (request.message === "stopLoop") {
+    console.log("stopped looping...");
+    videoFrame.removeAttribute("loop");
+  }
+  for (i = 0; i &lt; videoElements.length; i++) {
+    if (request.action === "stop" &amp;&amp; !videoElements[i].paused) {
+      videoElements[i].pause();
+    } else if (request.action === "resume" &amp;&amp; videoElements[i].paused) {
+      videoElements[i].play();
+    }
+  }
+});
+let repeat = () => {
+  let repeating = videoFrame.getAttribute("loop");
+
+  console.log(repeating);
+
+  if (!repeating) {
+    videoFrame.setAttribute("loop", true);
+    document
+      .getElementsByClassName("btn-div")[0]
+      .setAttribute("style", "color: red !important;");
+  } else {
+    videoFrame.removeAttribute("loop");
+    document
+      .getElementsByClassName("btn-div")[0]
+      .setAttribute("style", "color: white !important;");
+  }
+};
+
+let runDetectVideoInfo = detectVideoInfo();
+let usingSmallBtn = true;
+setInterval(() => {
+  if (document.webkitFullscreenElement &amp;&amp; usingSmallBtn) {
+    setLargeBtn();
+    usingSmallBtn = false;
+  }
+
+  if (!document.webkitFullscreenElement &amp;&amp; !usingSmallBtn) {
+    setSmallBtn();
+    usingSmallBtn = true;
+  }
+}, 100);
+
+const video = document.querySelector("video");
+
+video.addEventListener("pause", (event) => {
+  chrome.runtime.sendMessage({ msg: "audio inactive" }, async (tabId) => {
+    //console.log("My inactabId is", await tabId.tab);
+  });
+});
+
+video.addEventListener("play", (event) => {
+  chrome.runtime.sendMessage({ msg: "audio active" }, async (tabId) => {
+    // console.log("My actabId is", await tabId.tab);
+  });
+});
+
+// let detectAudio = setInterval(() => {
+//   if (
+//     !!Array.prototype.find.call(
+//       document.querySelectorAll("audio,video"),
+//       function (elem) {
+//         return elem.duration > 0 &amp;&amp; !elem.paused;
+//       }
+//     )
+//   );
+//   {
+//     chrome.runtime.sendMessage({ msg: "audio active" }, async (tabId) => {
+//       console.log("My tabId is", await tabId);
+//     });
+//   }
+//   if (
+//     !!Array.prototype.find.call(
+//       document.querySelectorAll("audio,video"),
+//       function (elem) {
+//         return (elem.duration > 0 &amp;&amp; elem.paused) || elem.duration == 0;
+//       }
+//     )
+//   ) {
+//     chrome.runtime.sendMessage({ msg: "audio inactive" }, async (tabId) => {
+//       console.log("My inactabId is", await tabId);
+//     });
+//   }
+// }, 100);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#detectVideoInfo">detectVideoInfo</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Aug 13 2021 02:33:02 GMT+0100 (British Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

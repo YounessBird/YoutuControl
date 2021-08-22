@@ -1,0 +1,124 @@
+html {
+  background: transparent;
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto";
+  height: 100%;
+}
+header {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  box-shadow: 0 2px 16px rgb(0 0 0 / 10%);
+  padding: 0 20px 0 5px;
+  position: relative;
+
+  border: 1px solid steelblue;
+  border-radius: 5px;
+}
+.logo-title-color {
+  color: red;
+}
+
+header .title {
+  text-align: left;
+  font-size: 16px;
+  flex-grow: 1;
+}
+.label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #07152d;
+}
+.container {
+  width: 250px;
+  height: 555px;
+  margin: 0px auto;
+  overflow: auto;
+  border: 1px solid steelblue;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+}
+
+.list-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 200px;
+  height: 250px;
+  margin: 15px auto 5px;
+  border: 1px solid steelblue;
+  padding-left: 5px;
+  border-radius: 5px;
+}
+ul.list {
+  list-style-type: none;
+  padding: 0;
+  position: relative;
+}
+ul.list li {
+  height: 35px;
+  padding-left: 72px;
+  border-bottom: 1px solid #ededee;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+ul.list li:last-child {
+  border: none;
+}
+.MuiFormControlLabel-labelPlacementStar {
+  margin-right: 24px !important;
+}
+.MuiFormControlLabel-root {
+  justify-content: space-between;
+}
+.icon {
+  position: absolute;
+  display: block;
+  width: 25px;
+  height: 25px;
+  left: 24px;
+  color: "action";
+  font-size: 40;
+}
+.switch {
+  display: flex;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  display: inline-block;
+  vertical-align: middle;
+  color: #07152d;
+}
+.title > * + * {
+  margin-left: 10px;
+}
+
+.page-title {
+  margin-top: 6px;
+  color: #07152d;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+.MuiListItem-dense {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+.hidden {
+  display: none;
+}
+.spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 55px;
+}
