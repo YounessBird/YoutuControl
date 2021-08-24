@@ -4,9 +4,21 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+<<<<<<< HEAD
 import ListItemText from "@material-ui/core/ListItemText";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import { blue } from "@material-ui/core/colors";
+=======
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import Checkbox from "@material-ui/core/Checkbox";
+import IconButton from "@material-ui/core/IconButton";
+import CommentIcon from "@material-ui/icons/Comment";
+import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
+import { blue } from "@material-ui/core/colors";
+import { FixedSizeList } from "react-window";
+import Typography from "@material-ui/core/Typography";
+>>>>>>> master
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -49,7 +61,11 @@ export default function PlayLists() {
   useLayoutEffect(() => {
     const setEffect = async () => {
       var storedPlaylists = await store.getContextMenuObject("playlists");
+<<<<<<< HEAD
       if (storedPlaylists[0]?.playlists.length > 0) {
+=======
+      if (storedPlaylists[0]?.playlists.length > 1) {
+>>>>>>> master
         setPlaylists(storedPlaylists[0].playlists);
         listRef.current?.classList.remove("hidden");
       }
@@ -66,7 +82,12 @@ export default function PlayLists() {
       tabs.forEach((tab) => {
         if (
           // this has to be changed to check only if the link is youtube
+<<<<<<< HEAD
           new RegExp("https://www.youtube.com/*", "g").test(tab.url)
+=======
+          new RegExp("https://www.youtube.com/*", "g").test(tab.url) &&
+          tab.audible
+>>>>>>> master
         ) {
           chrome.tabs.sendMessage(
             tab.id,
@@ -80,13 +101,27 @@ export default function PlayLists() {
               // var storedPlaylists = window.localStorage.getItem("playlists");
 
               var timer = setInterval(async () => {
+<<<<<<< HEAD
+=======
+                console.log("got response");
+>>>>>>> master
                 var storedPlaylists = await store.getContextMenuObject(
                   "playlists"
                 );
 
                 if (storedPlaylists[0]?.playlists.length > 0) {
+<<<<<<< HEAD
                   spinnerRef.current?.classList.add("hidden");
                   listRef.current?.classList.remove("hidden");
+=======
+                  console.log("this should be called once");
+                  spinnerRef.current?.classList.add("hidden");
+                  listRef.current?.classList.remove("hidden");
+                  console.log(
+                    "storedPlaylists",
+                    storedPlaylists[0].playlists[0]
+                  );
+>>>>>>> master
                   setPlaylists(storedPlaylists[0].playlists);
                   chrome.runtime.sendMessage({
                     msg: "playlistsStored",
@@ -102,7 +137,11 @@ export default function PlayLists() {
     });
   };
 
+<<<<<<< HEAD
   const handleToggle = (value) => async () => {
+=======
+  const handleToggle = (value) => () => {
+>>>>>>> master
     const currentIndex = playlists.indexOf(value);
     const newChecked = [...playlists];
 
@@ -111,7 +150,11 @@ export default function PlayLists() {
     } else {
       newChecked.splice(currentIndex, 1);
     }
+<<<<<<< HEAD
     store.addContextMenuObject("playlists", newChecked);
+=======
+    store.addContextMenuObject(playlists, newChecked);
+>>>>>>> master
     setPlaylists(newChecked);
     chrome.runtime.sendMessage({
       msg: "removePlayList",
