@@ -17,7 +17,11 @@ export default class store {
   /**
    * gets data from chrome storage
    * @param {*} menuId
+<<<<<<< HEAD
+   * @returns {Promise}
+=======
    * @returns
+>>>>>>> master
    */
   //context Menu store functions
   static async getContextMenuObject(menuId) {

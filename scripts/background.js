@@ -58,8 +58,13 @@ const contextMenuEvent = chrome.contextMenus.onClicked.addListener((data) => {
    * Search Menu option click event
    */
   if (data.menuItemId == "Search") {
+<<<<<<< HEAD
+    var dataToBeSearched = data.selectionText;
+    var newURL = `https://www.youtube.com/results?search_query=${dataToBeSearched}`;
+=======
     dataToBeSearched = data.selectionText;
     newURL = `https://www.youtube.com/results?search_query=${dataToBeSearched}`;
+>>>>>>> master
     chrome.tabs.create({ url: newURL });
   }
   /**
@@ -184,9 +189,19 @@ store.addContextMenuObject("Loop", "start loop");
 chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
   const menuObj = await store.getContextMenuObject(tabId.toString());
   console.log(tabId, changeInfo, tab);
+<<<<<<< HEAD
+  if (
+    new RegExp("https://www.youtube.com/*").test(tab.url) &&
+    tab.status == "complete"
+  ) {
+    //injectScript(tabId);
+    if (!menuObj.length) {
+      console.log("create 1");
+=======
   if (new RegExp("https://www.youtube.com/*", "g").test(tab.url)) {
     //injectScript(tabId);
     if (!menuObj.length) {
+>>>>>>> master
       const populatePlayTitles = {
         id: `tabId:${tabId} Play`,
         parentId: "Pause",
@@ -194,6 +209,14 @@ chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
         contexts: ["all"],
         onclick: contextMenuEvent,
       };
+<<<<<<< HEAD
+      await clearTitlesMenu(tabId);
+      chrome.contextMenus.create(populatePlayTitles);
+      await store.addContextMenuObject(tabId.toString(), `tabId:${tabId} Play`);
+    } else {
+      if (tab.audible && tab.status == "complete") {
+        console.log("create 2");
+=======
       chrome.contextMenus.create(populatePlayTitles);
       await store.addContextMenuObject(tabId.toString(), {
         id: `tabId:${tabId} Pause`,
@@ -203,6 +226,7 @@ chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
       });
     } else {
       if (tab.audible) {
+>>>>>>> master
         await clearTitlesMenu(tabId);
         const populatePauseTitles = {
           id: `tabId:${tabId} Play`,
@@ -256,6 +280,10 @@ chrome.runtime.onMessage.addListener(async function (
     //get playlists from storage
     var playLists = await store.getContextMenuObject("playlists");
     playLists[0].playlists.forEach((pl, i) => {
+<<<<<<< HEAD
+      clearTitlesMenu(`saveToList${pl}`);
+=======
+>>>>>>> master
       chrome.contextMenus.create({
         id: `saveToList${pl}`,
         title: pl,
@@ -266,7 +294,12 @@ chrome.runtime.onMessage.addListener(async function (
     });
   }
   if (request.msg === "removePlayList") {
+<<<<<<< HEAD
+    console.log(request.removePlayList);
+    chrome.contextMenus.remove(`saveToList${request.removePlayList}`);
+=======
     chrome.contextMenus.remove(`saveToPlayList${request.removePlayList}`);
+>>>>>>> master
   }
   // message from content scrpit to notify
   if (request.msg === "Notify") {

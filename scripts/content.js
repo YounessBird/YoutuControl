@@ -95,9 +95,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendMessage) => {
     stopLoop();
   }
   if (request.action === "next") {
+<<<<<<< HEAD
+    var playlist = document.querySelector(".ytd-toggle-button-renderer");
+=======
     console.log("next");
     var playlist = document.querySelector(".ytd-toggle-button-renderer");
     console.log(playlist);
+>>>>>>> master
     playlist
       ? document.querySelector("a.ytp-next-button").click()
       : window.history.go(1).click();
@@ -115,6 +119,48 @@ chrome.runtime.onMessage.addListener((request, sender, sendMessage) => {
   }
   //Store playlists msg from popup (to be improved)
   if (request.msg === "storePlayLists") {
+<<<<<<< HEAD
+    //implement a search for playlists in a Home youtube page
+    // check if ytd-guide-collapsible-section-entry-renderer exist an then act accoridingly
+    let playListCart = document.getElementsByTagName(
+      "ytd-guide-collapsible-section-entry-renderer"
+    );
+    if (playListCart.length > 1) {
+      // expand the playlist cart
+      document.querySelector('[title="Show more"]').click();
+      // select all tags with playlisturls
+      var playlistElements = document.querySelectorAll(
+        "a[href^='/playlist?list=']"
+      );
+      playListsArray = Array.from(
+        playlistElements,
+        (el) => el.innerText
+      ).filter((el) => el != "Liked videos");
+
+      // store playlists in chrome storage
+      chrome.storage.local.set({ playlists: playListsArray });
+    } else {
+      // this should execute if there is a youtube page with a video playing or not
+      document.querySelectorAll('[aria-label="Save to playlist"]')[1].click();
+      document.querySelectorAll('[aria-label="Save to playlist"]')[1].click();
+      var timer = setInterval(() => {
+        var playListsCollection = document.querySelectorAll(
+          "ytd-playlist-add-to-option-renderer"
+        );
+        let playListTitles = Array.from(playListsCollection, (playlist) =>
+          playlist.innerText.trim()
+        );
+        console.log(playListTitles);
+
+        if (playListTitles.length > 0) {
+          chrome.storage.local.set({ playlists: playListTitles }, () => {
+            sendMessage({ res: "saved" });
+          });
+          clearInterval(timer);
+        }
+      }, 100);
+    }
+=======
     document.querySelectorAll('[aria-label="Save to playlist"]')[1].click();
     document.querySelectorAll('[aria-label="Save to playlist"]')[1].click();
     var timer = setInterval(() => {
@@ -133,6 +179,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendMessage) => {
         clearInterval(timer);
       }
     }, 100);
+>>>>>>> master
   }
   // Save to playlist msg from background
   if (request.action === "saveToList") {
