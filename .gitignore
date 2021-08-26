@@ -7,7 +7,6 @@
 *.userosscache
 *.sln.docstates
 .DS_Store
-<<<<<<< HEAD
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -18,8 +17,6 @@
 # Local History for Visual Studio Code
 .history/
 
-=======
->>>>>>> master
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
