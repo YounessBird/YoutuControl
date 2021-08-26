@@ -29,10 +29,6 @@ function Ulist() {
       ...state,
       [event.target.name]: event.target.checked,
     });
-<<<<<<< HEAD
-=======
-    console.log(store.getContextMenuObject("options"));
->>>>>>> master
     setState((state) => ({
       ...state,
       [event.target.name]: event.target.checked,
