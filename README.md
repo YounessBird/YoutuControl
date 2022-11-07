@@ -9,8 +9,7 @@
 - You can play pause loop, move next or back 
 - You can control more that just one video at a time 
 - you can search any selected text on youtube. by selecting the text you wish to search the option "Search Youtube for <Your selected text>" will show up     in the context menu.
-- You can import your favourit playlists to play from the context menu 
-- You can save your favourit video to your playlist 
-- You can choose how many options you wish to see in your context menu 
+- You can save your favourit video to your playlists 
+- You can choose which options you wish to see in your context menu 
 
 
